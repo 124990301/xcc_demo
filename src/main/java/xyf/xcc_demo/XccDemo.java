@@ -22,24 +22,26 @@ public class XccDemo {
          * 当同一时间任务数大于maximumPoolSize+队列允许的最大线程数之和时，就会报错
          */
         ExecutorService pool = new ThreadPoolExecutor(5,10,5L, TimeUnit.MINUTES,new ArrayBlockingQueue(100),Executors.defaultThreadFactory(),new ThreadPoolExecutor.AbortPolicy() );
-
+        //固定大小的线程池,默认的任务队列无限大，因此maximumPoolSize永远等不到新建线程，所以没有用
+        ExecutorService pool2 = Executors.newFixedThreadPool(5);
+        //无线容量线程池，所有任务都会临时创建线程，并在默认的时间后销毁
+        ExecutorService pool3 = Executors.newCachedThreadPool();
         //创建任务
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 System.out.println("id:"+Thread.currentThread().getId()+"    name:"+Thread.currentThread().getName());
-                try {
-                    Thread.sleep(3000L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    Thread.sleep(3000L);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
             }
         };
         //将任务交给线程池对象，线程池对象会取出线程执行任务
         for(int i=0;i<20;i++){
-            pool.execute(runnable);
+            pool3.execute(runnable);
         }
-        //（固定大小的线程池）
-//        ExecutorService pool = Executors.newFixedThreadPool(10);
+
     }
 }
