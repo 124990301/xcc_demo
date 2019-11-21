@@ -22,7 +22,7 @@ public class XccDemo {
          * 当同一时间任务数大于maximumPoolSize+队列允许的最大线程数之和时，就会报错
          */
         ExecutorService pool = new ThreadPoolExecutor(5,10,5L, TimeUnit.MINUTES,new ArrayBlockingQueue(9),Executors.defaultThreadFactory(),new ThreadPoolExecutor.AbortPolicy() );
-        //固定大小的线程池,默认的任务队列无限大，因此maximumPoolSize永远等不到新建线程，所以没有用
+        //固定大小的线程池,等待的任务队列无限大，因此maximumPoolSize永远等不到新建线程，所以没有用
         ExecutorService pool2 = Executors.newFixedThreadPool(5);
         //无线容量线程池，所有任务都会临时创建线程，并在默认的时间后销毁
         ExecutorService pool3 = Executors.newCachedThreadPool();
